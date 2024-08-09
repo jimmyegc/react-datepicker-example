@@ -48,20 +48,19 @@ export const DatepickerRange = ({
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    // console.log(end)
+    console.log(`${start}-${end}`)
     if (end != null) {
       const isSameDay = new Date(start).getTime() === new Date(end).getTime();
-      const humanDate = isSameDay ? formatDate(start) : `${formatDate(start)}-${formatDate(end)}`;
-      const rawDate = isSameDay ? start : `${start}@${end}`;
-
+      const humanDate = `${isSameDay}` ? formatDate(start) : `(${formatDate(start)}-${formatDate(end)})`;
+      const rawDate = isSameDay ? `${start}@${end}` : `${start}@${end}`;
       const newDateSelected = {
         id: crypto.randomUUID(),
         rawDate,
         humanDate,
         status,
       };
-
       onListChange([...list, newDateSelected]);
+      setStartDate(null)
       setEndDate(null);
     }
   };
@@ -82,13 +81,12 @@ export const DatepickerRange = ({
       endDate={endDate}
       selectsRange
       toggleCalendarOnIconClick
-    /* 
-    inline */
+      isClearable
     />
     <br />
     {list?.map((item) => (
       <div
-        key={item}
+        key={item.id}
       >
         <p>
           {item.humanDate}
@@ -97,9 +95,9 @@ export const DatepickerRange = ({
         </p>
       </div>
     ))}
-    {/*       <pre>
-        {JSON.stringify(list, null, 2)}
-      </pre> */}
+    <pre>
+      {JSON.stringify(list, null, 2)}
+    </pre>
 
   </>
   )
