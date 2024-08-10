@@ -12,13 +12,13 @@ export const App = () => {
 
   return <>
     <h1>Webform</h1>
-    {/* <Webform /> */}
-    <DatepickerRange
+    <Webform />
+    {/*  <DatepickerRange
       title="Bloqueo de días:"
       status="disabled"
       list={listDisabledDays}
       onListChange={handleDisabledDaysChange}
-    />
+    /> */}
   </>
 }
 
