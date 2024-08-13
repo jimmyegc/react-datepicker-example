@@ -10,7 +10,7 @@ export const WFCFormShortText = ({
 }) => {
 
 
-  const methods = useForm<>();
+  const methods = useForm();
   /*useValidWFCForm({
     clearErrors: methods.clearErrors,
     idActually: '0', //methods.watch("idComponent"),

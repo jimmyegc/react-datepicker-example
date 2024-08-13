@@ -91,7 +91,9 @@ export const DatepickerRange = ({
         <p>
           {item.humanDate}
           {/* {JSON.stringify(item, null, 2)} */}
-          <button onClick={() => handleRemoveItem(item.id)}>delete</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => handleRemoveItem(item.id)}>delete</button>
         </p>
       </div>
     ))}
