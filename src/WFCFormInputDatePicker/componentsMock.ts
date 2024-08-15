@@ -53,12 +53,12 @@ export const componentsMock = {
     maxAge: 65,
     canSelectPastDates: false,
     maxPastDays: 60,
-    canSelectFutureDates: true,
+    canSelectFutureDates: false,
     maxFutureDays: 90,
-    isEnableCurrentDay: true,
+    isEnableCurrentDay: false,
     maxHourCurrentDay: "17:00",
     canBlockDays: false,
-    canEnabledDays: false,
+    canEnabledDays: true,
     disabledDays: [
       {
         id: "ad1b8080-140b-4c79-99d0-b91f192da498",
@@ -81,7 +81,7 @@ export const componentsMock = {
         rawDate:
           "Thu Jul 18 2024 00:00:00 GMT-0600 (hora estándar central)@Thu Jul 18 2024 00:00:00 GMT-0600 (hora estándar central)",
         humanDate: "18/07/2024",
-        status: "disabled",
+        status: "enabled",
       },
     ],
   },

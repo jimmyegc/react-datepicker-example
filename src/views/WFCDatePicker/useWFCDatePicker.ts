@@ -21,7 +21,9 @@ interface ListDays {
 export const useWFCDatePicker = () => {
   // States
   const [excludeDates, setExcludeDates] = useState<BlockDates[]>([]);
+  const [includeDates, setIncludeDates] = useState<BlockDates[]>([]);
   const [age, setAge] = useState(0);
+  const [hour, setHour] = useState("00:00");
   const [dateFormat, setDateFormat] = useState("dd/MM/YYYY");
 
   const [validationMessage, setValidationMessage] = useState("");
@@ -48,9 +50,14 @@ export const useWFCDatePicker = () => {
     startOfWeek,
     maxPastDays,
     maxFutureDays,
+    isEnableCurrentDay,
+    maxHourCurrentDay,
+    enabledDays,
+    formatHour,
   } = objConf;
 
   const calendarStartDay = startOfWeek === "Dom" ? 0 : 1; // 0: Domingo 1: Lunes
+  const timeFormat = formatHour === "24" ? " HH:mm" : "h:mm aa"; // 24 Hrs / 12 Hrs
 
   const getExcludeDates = () => {
     if (canBlockDays) {
@@ -67,6 +74,21 @@ export const useWFCDatePicker = () => {
     }
   };
 
+  const getIncludeDates = () => {
+    if (canEnabledDays) {
+      const enabledDates: BlockDates = [];
+      if (enabledDays.length > 0) {
+        objConf.enabledDays.forEach((day) => {
+          enabledDates.push({
+            start: new Date(day.rawDate.split("@")[0]),
+            end: new Date(day.rawDate.split("@")[1]),
+          });
+        });
+        setIncludeDates(enabledDates);
+      }
+    }
+  };
+
   const handleAgeValidation = (e) => {
     setAge(e.target.value);
     const ageCalc = e.target.value;
@@ -79,6 +101,31 @@ export const useWFCDatePicker = () => {
     }
   };
 
+  const validHHMMstring = (str) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(str);
+
+  const handleMaxTimeCurrentDay = (value) => {
+    if (!validHHMMstring(value)) {
+      setValidationMessage("Ingrese una hora válida en formato 24 hrs (HH:MM)");
+      return false;
+    }
+    setValidationMessage("");
+    if (maxHourCurrentDay) {
+      const [maxHour, maxMinutes] = objConf.maxHourCurrentDay.split(":");
+      const [currentHour, currentMinutes] = value.split(":");
+      if (
+        currentHour < maxHour ||
+        (currentHour === maxHour && currentMinutes <= maxMinutes)
+      ) {
+        setValidationMessage("");
+      } else {
+        setValidationMessage(
+          `La ingresada tiene que ser menor a ${maxHour}:${maxMinutes}.`
+        );
+      }
+    }
+    //handleChange(startDate);
+  };
+
   return {
     // General
     objConf,
@@ -86,6 +133,7 @@ export const useWFCDatePicker = () => {
     option,
     readOnly,
     dateFormat,
+    timeFormat,
     calendarStartDay,
     validationMessage,
     // Custom Components
@@ -105,5 +153,12 @@ export const useWFCDatePicker = () => {
     maxPastDays,
     // Future Days
     maxFutureDays,
+    isEnableCurrentDay,
+    hour,
+    setHour,
+    handleMaxTimeCurrentDay,
+    // include Dates or Enabled Dates
+    getIncludeDates,
+    includeDates,
   };
 };

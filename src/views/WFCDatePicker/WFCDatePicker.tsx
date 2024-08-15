@@ -2,6 +2,7 @@
 import { useWFCDatePicker } from "./useWFCDatePicker";
 import { WFCDatePickerAgeRange } from "./WFCDatePickerAgeRange/WFCDatePickerAgeRange";
 import { WFCDatePickerBlockDays } from "./WFCDatePickerBlockDays/WFCDatePickerBlockDays";
+import { WFCDatePickerEnabledDays } from "./WFCDatePickerEnabledDays/WFCDatePickerEnabledDays";
 import { WFCDatePickerFutureDays } from "./WFCDatePickerFutureDays/WFCDatePickerFutureDays";
 import { WFCDatePickerPastDays } from "./WFCDatePickerPastDays/WFCDatePickerPastDays";
 
@@ -24,11 +25,17 @@ export const WFCDatePicker = () => {
       {/* Rango de Edad */}
       {option === options.custom && isRangeOfAge && <WFCDatePickerAgeRange />}
       {/* Habilita fechas pasadas */}
-      {option === options.custom && canSelectPastDates && <WFCDatePickerPastDays />}
+      {option === options.custom && canSelectPastDates && (
+        <WFCDatePickerPastDays />
+      )}
       {/* Habilita fechas futuras  */}
-      {option === options.custom && canSelectFutureDates && <WFCDatePickerFutureDays />}
+      {option === options.custom && canSelectFutureDates && (
+        <WFCDatePickerFutureDays />
+      )}
       {/* Habilitar días */}
-
+      {option === options.custom && canEnabledDays && (
+        <WFCDatePickerEnabledDays />
+      )}
       {/* Default */}
       {option === options.default && <div>Default</div>}
       <hr />
