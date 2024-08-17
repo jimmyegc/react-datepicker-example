@@ -5,7 +5,7 @@ import { es } from "date-fns/locale/es";
 import { useWFCDatePicker } from "../useWFCDatePicker";
 registerLocale("es", es);
 
-export const WFCDatePickerBlockDays = () => {
+export const WFCDatePickerBlockedDays = () => {
   const { readOnly, calendarStartDay, excludeDates, getExcludeDates } =
     useWFCDatePicker();
   const [startDate, setStartDate] = useState<Date | null>(null);
