@@ -24,9 +24,17 @@ export const App = () => {
     backgroundColor: 'blue',
     textColor: "white"
   }
+
+  const excludedDates= [
+    subDays(new Date(), 4),
+    subDays(new Date(), 3),
+    subDays(new Date(), 2),
+    subDays(new Date(), 1),
+  ]
+
   const highlightWithRanges = [
     {
-      "react-datepicker__day--highlighted-custom-1": [
+      "react-datepicker__day--highlighted-custom-2": [
         subDays(new Date(), 4),
         subDays(new Date(), 3),
         subDays(new Date(), 2),
@@ -49,10 +57,13 @@ export const App = () => {
         <DatePicker          
           selected={startDate}  
           onChange={(date) => setStartDate(date)}
+          onKeyDown={(e) => e.preventDefault()}
           highlightDates={highlightWithRanges}
+          excludeDates={excludedDates}
           renderDayContents={(day) => <span>{day}</span>}
 
         />
+        { JSON.stringify(startDate)}
       </div>
 
       {/*  <div className="container">

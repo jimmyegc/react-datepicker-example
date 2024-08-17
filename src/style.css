@@ -39,3 +39,17 @@
   border: 1px solid red;
   border-radius: 5px;
 }
+
+.react-datepicker__day--highlighted-custom-2 {
+  background-color: crimson;
+  color: white;
+  opacity: 0.25;
+  /* border: 1px solid blueviolet;
+  border-radius: 1px; */
+}
+
+.react-datepicker__day--highlighted-custom-2:hover {
+  background-color: crimson;
+  color: white;
+  cursor: not-allowed;
+}
