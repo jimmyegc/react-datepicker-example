@@ -40,16 +40,22 @@
   border-radius: 5px;
 }
 
-.react-datepicker__day--highlighted-custom-2 {
-  background-color: crimson;
-  color: white;
-  opacity: 0.25;
+.react-datepicker__day--highlighted-custom-2 {  
+  background-color: darkgrey;
+  color: #fafafa;  
+  opacity: 0.35;
+  border-radius: 15px;
   /* border: 1px solid blueviolet;
   border-radius: 1px; */
 }
 
 .react-datepicker__day--highlighted-custom-2:hover {
-  background-color: crimson;
-  color: white;
+  background-color: darkgrey;
+  color: #fafafa;
+  border-radius: 15px;
   cursor: not-allowed;
+}
+
+.react-datepicker__month-container {
+  /* background-color: black; */
 }
