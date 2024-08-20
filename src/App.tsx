@@ -17,6 +17,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays} from "date-fns";
 import './style.css'
+import { Button } from "./components/ui";
 
 export const App = () => {
   const [startDate, setStartDate] = useState(new Date())
@@ -50,6 +51,12 @@ export const App = () => {
       ],
     },
   ];
+
+  const handleClick = () => {
+    console.log('clicked!')
+  }
+
+
   return (
     <>
       <h4>Webform</h4>
@@ -65,6 +72,16 @@ export const App = () => {
         />
         { JSON.stringify(startDate)}
       </div>
+
+    <div className="container mt-4">
+      <Button      
+          className="btn btn-primary"                
+          clickHandler={handleClick}
+        >
+          Click me!
+      </Button>
+    </div>
+      
 
       {/*  <div className="container">
          <WFCDatePicker />
