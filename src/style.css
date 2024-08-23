@@ -1,4 +1,4 @@
-.react-datepicker__day--range-end::before,
+/*.react-datepicker__day--range-end::before,
 .react-datepicker__day--range-start::before {
   border-radius: 50% !important;
   width: 100%;
@@ -46,8 +46,8 @@
   color: gray;  
   opacity: 0.35;
   border-radius: 15px;
-  /* border: 1px solid blueviolet;
-  border-radius: 1px; */
+   border: 1px solid blueviolet;
+  border-radius: 1px; 
 }
 
 .react-datepicker__day--highlighted-custom-2:hover {
@@ -58,7 +58,7 @@
 }
 
 .react-datepicker__month-container {
-  /* background-color: black; */
+   background-color: black; 
 }
 
 .react-datepicker__day--selected {
@@ -68,10 +68,11 @@
 .react-datepicker__day--selected:hover {
   background-color: black;
 }
-
+*/
 
 /**
 variable (--bg-even ) dias disponibles, 
 variable (--bg-odd) dias bloqueados,
 variable (--color-accent) dia actual
 */
+

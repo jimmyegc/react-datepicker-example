@@ -16,7 +16,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays} from "date-fns";
-import './style.css'
+import './styleAgenda.css'
 import { Button } from "./components/ui";
 
 export const App = () => {

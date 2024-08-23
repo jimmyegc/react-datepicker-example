@@ -1,0 +1,66 @@
+:root {
+--bg-odd: #f9f9f9;
+--color-title-font: #000000;
+
+--color-secondary: #000;
+--color-white: #fff;
+
+--bg-gral-gray: #f2f2f2;
+--color-body-font: #808080;
+
+--color-accent: #fea112;
+}
+
+/* Día por defecto */
+.react-datepicker__day {  
+    background-color: var(--bg-odd);
+    color: var( --color-title-font);  
+  }
+  
+  .react-datepicker__day:hover {  
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+  
+  /* Días no disponibles */
+  .react-datepicker__day--disabled  {
+    background-color: var(--bg-gral-gray);
+    color: var( --color-body-font);
+    cursor: not-allowed;
+    border-radius: 4px;
+  }
+  
+  .react-datepicker__day--disabled:hover  {
+    background-color: var(--bg-gral-gray);
+    color: var( --color-body-font);
+    cursor: not-allowed;
+    border-radius: 4px;
+  }
+  
+  /* Días bloqueados */
+  .react-datepicker__day--excluded {
+    background-color: var(--bg-gral-gray);
+    color: var( --color-body-font);
+    cursor: not-allowed;
+    border-radius:  4px;
+  }
+  
+  /* Horario */
+  .react-datepicker__day--selected {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+  }
+  
+  .react-datepicker__time-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .react-datepicker__time-list-item--selected {
+    background-color: var(--color-accent) !important;
+    color: var(--color-white) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
