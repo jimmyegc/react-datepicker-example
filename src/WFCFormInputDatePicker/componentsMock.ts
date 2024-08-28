@@ -48,9 +48,9 @@ export const componentsMock = {
     defaultDateType: "today",
     defaultDate: "2024-08-31T19:42:13.000Z",
     defaultDateValue: "",
-    isRangeOfAge: false,
+    isRangeOfAge: true,
     minAge: 18,
-    maxAge: 65,
+    maxAge: 60,
     canSelectPastDates: false,
     maxPastDays: 60,
     canSelectFutureDates: false,
@@ -58,7 +58,7 @@ export const componentsMock = {
     isEnableCurrentDay: false,
     maxHourCurrentDay: "17:00",
     canBlockDays: false,
-    canEnabledDays: true,
+    canEnabledDays: false,
     disabledDays: [
       {
         id: "ad1b8080-140b-4c79-99d0-b91f192da498",

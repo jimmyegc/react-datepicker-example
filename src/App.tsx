@@ -11,81 +11,23 @@ import { WFCDatePicker } from "./views/WFCDatePicker/WFCDatePicker";
 import { useState } from "react";
 
 */
-
-import { useState } from "react";
+/*import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays} from "date-fns";
 import './styleAgenda.css'
-import { Button } from "./components/ui";
+import { Button } from "./components/ui"; */
+import { WFCDatePicker } from "./views/WFCDatePicker/WFCDatePicker";
 
 export const App = () => {
-  const [startDate, setStartDate] = useState(new Date())
-  const styleHighlighted = {
-    backgroundColor: 'blue',
-    textColor: "white"
-  }
-
-  const excludedDates= [
-    subDays(new Date(), 4),
-    subDays(new Date(), 3),
-    subDays(new Date(), 2),
-    subDays(new Date(), 1),
-  ]
-
-  const highlightWithRanges = [
-    {
-      "react-datepicker__day--highlighted-custom-2": [
-        subDays(new Date(), 4),
-        subDays(new Date(), 3),
-        subDays(new Date(), 2),
-        subDays(new Date(), 1),
-      ],
-    },
-    {
-      "react-datepicker__day--highlighted-custom-2": [
-        addDays(new Date(), 1),
-        addDays(new Date(), 2),
-        addDays(new Date(), 3),
-        addDays(new Date(), 4),
-      ],
-    },
-  ];
-
-  const handleClick = () => {
-    console.log('clicked!')
-  }
-
+  
 
   return (
     <>
-      <h4>Webform</h4>
-      <div className="container">
-        <DatePicker          
-          selected={startDate}  
-          onChange={(date) => setStartDate(date)}
-          onKeyDown={(e) => e.preventDefault()}
-          highlightDates={highlightWithRanges}
-          excludeDates={excludedDates}
-          renderDayContents={(day) => <span>{day}</span>}
-
-        />
-        { JSON.stringify(startDate)}
-      </div>
-
-    <div className="container mt-4">
-      <Button      
-          className="btn btn-primary"                
-          clickHandler={handleClick}
-        >
-          Click me!
-      </Button>
-    </div>
-      
-
-      {/*  <div className="container">
+      <h4>Webform</h4>            
+       <div className="container">
          <WFCDatePicker />
-      </div> */}
+      </div> 
       {/*  <WFCFormInputDatePicker
       onChangeProps={{}}
       objConf={componentsMock.objConf}

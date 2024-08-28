@@ -89,14 +89,13 @@ export const useWFCDatePicker = () => {
     }
   };
 
-  const handleAgeValidation = (e) => {
-    setAge(e.target.value);
-    const ageCalc = e.target.value;
+  const handleAgeValidation = (e) => {    
+    const ageCalc = ageCalculator(e);
     if (ageCalc >= objConf.minAge && ageCalc <= objConf.maxAge) {
       setValidationMessage("");
     } else {
       setValidationMessage(
-        `La edad no es válida, mínimo ${objConf.minAge} máximo ${objConf.maxAge}`
+        `La edad ${ageCalc} no es válida, mínimo ${objConf.minAge} máximo ${objConf.maxAge}`
       );
     }
   };
@@ -126,6 +125,18 @@ export const useWFCDatePicker = () => {
     //handleChange(startDate);
   };
 
+  const ageCalculator = (fechaNacimiento: Date) => {    
+    const nacimiento = new Date(fechaNacimiento);
+    const hoy = new Date();    
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();        
+    const mesDiferencia = hoy.getMonth() - nacimiento.getMonth();
+    const diaDiferencia = hoy.getDate() - nacimiento.getDate();    
+    if (mesDiferencia < 0 || (mesDiferencia === 0 && diaDiferencia < 0)) {
+        edad--;
+    }
+    return edad;
+}
+
   return {
     // General
     objConf,
@@ -149,6 +160,7 @@ export const useWFCDatePicker = () => {
     // Range of Age
     age,
     handleAgeValidation,
+    ageCalculator,
     // Past Days
     maxPastDays,
     // Future Days
