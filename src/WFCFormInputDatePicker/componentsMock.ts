@@ -50,7 +50,7 @@ export const componentsMock = {
     defaultDateValue: "",
     isRangeOfAge: true,
     minAge: 18,
-    maxAge: 60,
+    maxAge: 65,
     canSelectPastDates: false,
     maxPastDays: 60,
     canSelectFutureDates: false,

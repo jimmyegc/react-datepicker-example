@@ -1,5 +1,5 @@
 import DatePicker from "react-datepicker"
-import { Button } from "../../../components/ui"
+import { Button } from "../components/ui"
 import { subDays, addDays} from "date-fns";
 import { useState } from "react";
 export const Agenda = () => {

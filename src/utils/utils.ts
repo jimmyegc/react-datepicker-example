@@ -13,3 +13,4 @@ export const toSnakeCase = (string) => {
     .map((word) => word.toLowerCase())
     .join("_");
 };
+

@@ -8,8 +8,8 @@ export const WFCDatePickerAgeRange = () => {
 
   const handleChange = (e) => {
     console.log(e)
-    setStartDate(e)
-    handleAgeValidation(e)
+    //&&setStartDate(e)
+    //handleAgeValidation(e)
   }
 
   return (<>
@@ -26,11 +26,8 @@ export const WFCDatePickerAgeRange = () => {
             icon="fa fa-calendar"
             /* className={`form-control form-control-solid w-250px ${c}`} */
             selected={startDate}
-            onChange={handleChange}
-            onKeyDown={(e) => {
-              e.preventDefault();
-            }}
-            dateFormat={dateFormat} 
+            onChange={handleChange}            
+            /* dateFormat={dateFormat}  */
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"            
