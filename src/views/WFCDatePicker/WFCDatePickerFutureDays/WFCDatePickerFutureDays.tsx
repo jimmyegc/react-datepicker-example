@@ -20,13 +20,15 @@ export const WFCDatePickerFutureDays = () => {
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const handleChange = (dateChange: Date) => {
-    if (canSelectFutureDates && isEnableCurrentDay) {
-      const formattedDate = dateChange.toISOString().split("T")[0];
-      const dateChangeHour = new Date(`${formattedDate}T${hour}:00`);
-      /* setValue(objConf?.internalName, dateChangeHour, {
-        shouldDirty: true,
-      });*/
-      setStartDate(dateChangeHour);
+    if (canSelectFutureDates && isEnableCurrentDay) {      
+      if(hour) {
+        const formattedDate = dateChange.toISOString().split("T")[0];
+        const dateChangeHour = new Date(`${formattedDate}T${hour}:00`);
+        /* setValue(objConf?.internalName, dateChangeHour, {
+          shouldDirty: true,
+        });*/
+        setStartDate(dateChangeHour);
+      }      
     } else {
       setStartDate(dateChange);
     }
