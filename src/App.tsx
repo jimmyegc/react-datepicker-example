@@ -45,6 +45,16 @@ const convertLocalToUTCDate = (date) => {
 export const App = () => {
   
   const [startDate, setStartDate] =  useState(new Date());
+
+  const handleSend = () => {
+    console.log(startDate.toLocaleString())    
+    console.log(new Date(startDate))
+    console.log(convertUTCToLocalDate(startDate))
+    console.log('---')
+    if (startDate instanceof Date && !isNaN(startDate)) { // isNaN wont accept a date in typescript, use date.getTime() instead to produce a number
+      console.log("is date!");
+  }
+  }
   
   /* const dateChanged = (date) => {
     const UTCDateTime = moment(date).tz("UTC").format("YYYY-MM-DD[T]HH:mm:ss");
@@ -67,6 +77,7 @@ export const App = () => {
            timeCaption="time"
            dateFormat="MMMM d, yyyy h:mm aa"
         />
+        <button onClick={handleSend}>send me</button>
         {/*  <WFCDatePicker /> */}
       </div> 
       {/*  <WFCFormInputDatePicker
