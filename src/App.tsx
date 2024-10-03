@@ -1,6 +1,6 @@
 /*import { useState } from "react";
 import { DatepickerRange } from "./DatepickerRange/DatepickerRange";
-import { Webform } from "./Webform/Webform";
+
 import { WFCFormInputDatePicker } from "./WFCFormInputDatePicker/WFCFormInputDatePicker";
 import { componentsMock } from "./WFCFormInputDatePicker/componentsMock";
 import { WFCDatePicker } from "./views/WFCDatePicker/WFCDatePicker"; */
@@ -19,6 +19,7 @@ import './styleAgenda.css'
 import { Button } from "./components/ui"; */
 //import { WFCDatePicker } from "./views/WFCDatePicker/WFCDatePicker";
 
+import { Webform } from "./Webform/Webform";
 import { useState } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
@@ -84,7 +85,7 @@ export const App = () => {
       onChangeProps={{}}
       objConf={componentsMock.objConf}
     /> */}
-      {/* <Webform /> */}
+      <Webform /> 
       {/* <DatepickerRange
       title="Bloqueo de días:"
       status="disabled"
