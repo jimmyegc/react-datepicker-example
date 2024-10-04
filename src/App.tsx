@@ -79,12 +79,12 @@ export const App = () => {
            dateFormat="MMMM d, yyyy h:mm aa"
         />
         <button onClick={handleSend}>send me</button>
-        {/*  <WFCDatePicker /> */}
+        <WFCDatePicker />
       </div> 
-      {/*  <WFCFormInputDatePicker
+      <WFCFormInputDatePicker
       onChangeProps={{}}
       objConf={componentsMock.objConf}
-    /> */}
+    /> 
       <Webform /> 
       {/* <DatepickerRange
       title="Bloqueo de días:"
