@@ -5,8 +5,10 @@ import { WFCDatePickerEnabledDays } from "./WFCDatePickerEnabledDays/WFCDatePick
 import { WFCDatePickerBlockedDays } from "./WFCDatePickerBlockedDays/WFCDatePickerBlockedDays";
 import { WFCDatePickerPastDays } from "./WFCDatePickerPastDays/WFCDatePickerPastDays";
 import { WFCDatePickerFutureDays } from "./WFCDatePickerFutureDays/WFCDatePickerFutureDays";
-
+import { objConf } from "./WFCDatePickerMock";
+import { WFCDatePickerDefault } from "./WFCDatePickerDefault/WFCDatePickerDefault";
 export const WFCDatePicker = () => {
+  
   const {        
     option,    
     options,
@@ -36,8 +38,11 @@ export const WFCDatePicker = () => {
         <WFCDatePickerFutureDays />
       )}      
       {/* Default */}
-      {option === options.default && <div>Default</div>}
-      
+      {option === options.default && <WFCDatePickerDefault />}
+      <div id="debug">
+        <pre>
+       { JSON.stringify(objConf, null, 2)}</pre>
+      </div>
       {/* 
       <pre>{JSON.stringify(componentsMock, null, 2)}</pre>      
       <pre>{JSON.stringify(objConf, null, 2)}</pre>

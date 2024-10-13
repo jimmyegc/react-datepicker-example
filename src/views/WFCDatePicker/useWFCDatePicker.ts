@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { componentsMock } from "../../WFCFormInputDatePicker/componentsMock";
+import { useEffect, useState } from "react";
+import { objConf } from "./WFCDatePickerMock";
+import { subDays, addDays, getDay } from "date-fns";
 
 enum options {
   "default",
@@ -19,16 +20,14 @@ interface ListDays {
 }
 
 export const useWFCDatePicker = () => {
-  // States
+  const [defaultDate, setDefaultDate] = useState<Date | null>();
   const [excludeDates, setExcludeDates] = useState<BlockDates[]>([]);
   const [includeDates, setIncludeDates] = useState<BlockDates[]>([]);
   const [age, setAge] = useState(0);
   const [hour, setHour] = useState("00:00");
-  const [dateFormat, setDateFormat] = useState("dd/MM/YYYY");
-
+  const [dateFormat, setDateFormat] = useState<string | undefined>();  
   const [validationMessage, setValidationMessage] = useState("");
-
-  const { objConf } = componentsMock;
+  const shouldCloseOnSelect = true
 
   const option =
     objConf.canBlockDays ||
@@ -54,10 +53,30 @@ export const useWFCDatePicker = () => {
     maxHourCurrentDay,
     enabledDays,
     formatHour,
+    isHourRequired
   } = objConf;
 
   const calendarStartDay = startOfWeek === "Dom" ? 0 : 1; // 0: Domingo 1: Lunes
   const timeFormat = formatHour === "24" ? " HH:mm" : "h:mm aa"; // 24 Hrs / 12 Hrs
+  const timeInputLabel = "Hora";
+
+  const getFormatDate = () => {
+    const cleanFormatDate = objConf.formatDate?.replace(/ /g, objConf.separator) || "";
+    const hourFormat = objConf.isHourRequired
+      ? objConf.formatHour === "24" ? "HH:mm" : "h:mm aa"
+      : "";
+      
+    return `${cleanFormatDate}${objConf.isHourRequired ? ` ${hourFormat}` : ""}`;
+  };
+  
+
+  const filterDate = (date) => {
+    // Días hábiles de la Semana    
+    const day = getDay(date);
+    return objConf.daysOfWeek.every(
+      (dayConfig, index) => day !== (!dayConfig.enabled ? index : -1)
+    );
+  };
 
   const getExcludeDates = () => {
     if (canBlockDays) {
@@ -135,7 +154,41 @@ export const useWFCDatePicker = () => {
         edad--;
     }
     return edad;
-}
+  }
+
+  const formatUTC = (dateInt, addOffset = false) => {
+    const date =
+      !dateInt || dateInt.length < 1 ? new Date() : new Date(dateInt);
+    if (typeof dateInt === "string") {
+      return date;
+    } else {
+      const offset = addOffset
+        ? date.getTimezoneOffset()
+        : -date.getTimezoneOffset();
+      const offsetDate = new Date();
+      offsetDate.setTime(date.getTime() + offset * 60000);
+      return offsetDate;
+    }
+  };
+
+  /*const red = errors[objConf.internalName]?.type ? "required" : "";
+  const blue = objConf.isRequired ? "required-default" : "";
+  const c = red !== "" ? red : blue; */
+  const c = "";
+
+  const handleInitial = () => {
+    const initialDate = objConf.defaultDateType === "today" || objConf.defaultDateType === ""
+      ? new Date()
+      : new Date(objConf.defaultDate);
+
+    setDefaultDate(initialDate);
+    setDateFormat(getFormatDate());
+  };
+
+  useEffect(() => {
+    handleInitial();
+  }, [])
+
 
   return {
     // General
@@ -146,7 +199,13 @@ export const useWFCDatePicker = () => {
     dateFormat,
     timeFormat,
     calendarStartDay,
+    defaultDate,
+    filterDate,
     validationMessage,
+    c,
+    isHourRequired,
+    timeInputLabel,
+    shouldCloseOnSelect,
     // Custom Components
     canBlockDays,
     isRangeOfAge,
