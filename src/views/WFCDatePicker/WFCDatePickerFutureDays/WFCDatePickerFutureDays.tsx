@@ -151,6 +151,8 @@ return (
             timeInputLabel={timeInputLabel}
             timeFormat={formatHour}
             shouldCloseOnSelect={false}
+            closeOnScroll={true}
+            openToDate={new Date("1993/09/28")}
             customTimeInput={
               isHourRequired && formatHour === "24" ? (<CustomInput
                 className="form-control"

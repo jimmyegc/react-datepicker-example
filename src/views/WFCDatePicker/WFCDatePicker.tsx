@@ -8,10 +8,12 @@ import { WFCDatePickerPastDays } from "./WFCDatePickerPastDays/WFCDatePickerPast
 import { WFCDatePickerFutureDays } from "./WFCDatePickerFutureDays/WFCDatePickerFutureDays";
 import { WFCDatePickerDefault } from "./WFCDatePickerDefault/WFCDatePickerDefault";
 import { objConf } from "./WFCDatePickerMock";
+import { CustomDatePicker } from "./components/CustomDatePicker/CustomDatePicker";
+import { useState } from "react";
 
 
 export const WFCDatePicker = () => {
-
+  const [startDate, setStartDate] = useState(new Date());
   const {        
     option,    
     options,
@@ -24,6 +26,10 @@ export const WFCDatePicker = () => {
 
   return (
     <>
+     <CustomDatePicker
+       selected={startDate} 
+       onChange={(date) => setStartDate(date)} 
+     />
       {/* Default */}
       {option === options.default && <WFCDatePickerDefault />}
       {/* Rango de Edad */}
