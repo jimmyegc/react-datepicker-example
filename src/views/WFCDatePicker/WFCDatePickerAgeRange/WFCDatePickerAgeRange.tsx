@@ -1,38 +1,37 @@
-import DatePicker from "react-datepicker";
-import { useWFCDatePicker } from "../useWFCDatePicker";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useWFCDatePicker } from "../useWFCDatePicker";
 
 export const WFCDatePickerAgeRange = () => {
-  const [startDate, setStartDate] = useState(new Date())
-  const { age, handleAgeValidation, validationMessage, dateFormat, ageCalculator } = useWFCDatePicker()
+  const [startDate, setStartDate] = useState<Date | null>()
+  const { handleAgeValidation, validationMessage, dateFormat, today, readOnly, calendarStartDay } = useWFCDatePicker()
 
-  const handleChange = (e) => {
-    console.log(e)
-    //&&setStartDate(e)
-    //handleAgeValidation(e)
+  const handleChange = (dateChange) => {
+    setStartDate(dateChange)
+    handleAgeValidation(dateChange)
   }
 
-  return (<>
-    <div>WFCDatePickerAgeRange</div>
+  return (    
     <div>
-      <label>Edad</label>
-      {/* <input
-        type="number"
-        value={age}
-        onChange={handleAgeValidation}
-      /> */}
-       <DatePicker
-            locale="es"
-            icon="fa fa-calendar"
-            /* className={`form-control form-control-solid w-250px ${c}`} */
-            selected={startDate}
-            onChange={handleChange}            
-            /* dateFormat={dateFormat}  */
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"            
-          />
+      <label>Edad</label>      
+      <DatePicker
+        locale="es"
+        icon="fa fa-calendar"
+        /* className={`form-control form-control-solid w-250px ${c}`} */
+        selected={startDate}
+        onChange={handleChange}          
+        onKeyDown={(e) => e.preventDefault()}  
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"            
+        readOnly={readOnly}
+        dateFormat={dateFormat}
+        calendarStartDay={calendarStartDay}        
+        timeFormat=""        
+        maxDate={today}
+      />
       {validationMessage && <span>{validationMessage}</span>}
     </div>
-  </>)
+  )
 };
