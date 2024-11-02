@@ -53,7 +53,7 @@ export const objConf = {
   maxFutureDays: 30,
   isEnableCurrentDay: false,
   maxHourCurrentDay: null,
-  canBlockDays: false,
+  canBlockDays: true,
   canEnabledDays: false,
   disabledDays: [
     {
