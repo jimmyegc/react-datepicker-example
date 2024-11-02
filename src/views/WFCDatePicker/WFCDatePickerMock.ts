@@ -50,11 +50,11 @@ export const objConf = {
   maxAge: 65,
   canSelectPastDates: false,
   maxPastDays: 5,
-  canSelectFutureDates: true,
+  canSelectFutureDates: false,
   maxFutureDays: 5,
   isEnableCurrentDay: true,
   maxHourCurrentDay: "21:45",
-  canBlockDays: false,
+  canBlockDays: true,
   canEnabledDays: false,
   disabledDays: [
     {
