@@ -1,14 +1,19 @@
 //import { componentsMock } from "../../WFCFormInputDatePicker/componentsMock";
+import { useFormContext } from "react-hook-form";
 import { useWFCDatePicker } from "./useWFCDatePicker";
 import { WFCDatePickerAgeRange } from "./WFCDatePickerAgeRange/WFCDatePickerAgeRange";
 import { WFCDatePickerEnabledDays } from "./WFCDatePickerEnabledDays/WFCDatePickerEnabledDays";
 import { WFCDatePickerBlockedDays } from "./WFCDatePickerBlockedDays/WFCDatePickerBlockedDays";
 import { WFCDatePickerPastDays } from "./WFCDatePickerPastDays/WFCDatePickerPastDays";
 import { WFCDatePickerFutureDays } from "./WFCDatePickerFutureDays/WFCDatePickerFutureDays";
-import { objConf } from "./WFCDatePickerMock";
 import { WFCDatePickerDefault } from "./WFCDatePickerDefault/WFCDatePickerDefault";
+import { objConf } from "./WFCDatePickerMock";
+import { CustomDatePicker } from "./components/CustomDatePicker/CustomDatePicker";
+import { useState } from "react";
+
+
 export const WFCDatePicker = () => {
-  
+  const [startDate, setStartDate] = useState(new Date());
   const {        
     option,    
     options,
@@ -21,27 +26,26 @@ export const WFCDatePicker = () => {
 
   return (
     <>
+     <CustomDatePicker
+       selected={startDate} 
+       onChange={(date) => setStartDate(date)} 
+     />
+      {/* Default */}
+      {option === options.default && <WFCDatePickerDefault />}
       {/* Rango de Edad */}
       {option === options.custom && isRangeOfAge && <WFCDatePickerAgeRange />}
       {/* Habilitar días */}
-      {option === options.custom && canEnabledDays && (
-        <WFCDatePickerEnabledDays />
-      )}
+      {option === options.custom && canEnabledDays && <WFCDatePickerEnabledDays />}
       {/* Bloqueo de días */}
       {option === options.custom && canBlockDays && <WFCDatePickerBlockedDays />}      
       {/* Habilita fechas pasadas */}
-      {option === options.custom && canSelectPastDates && (
-        <WFCDatePickerPastDays />
-      )}
+      {option === options.custom && canSelectPastDates && <WFCDatePickerPastDays />}
       {/* Habilita fechas futuras  */}
-      {option === options.custom && canSelectFutureDates && (
-        <WFCDatePickerFutureDays />
-      )}      
-      {/* Default */}
-      {option === options.default && <WFCDatePickerDefault />}
+      {option === options.custom && canSelectFutureDates && <WFCDatePickerFutureDays />}            
+      {/* Debug */}
       <div id="debug">
-        <pre>
-       { JSON.stringify(objConf, null, 2)}</pre>
+        <h4>Debug</h4>
+        <pre>{ JSON.stringify(objConf, null, 2)}</pre>
       </div>
       {/* 
       <pre>{JSON.stringify(componentsMock, null, 2)}</pre>      

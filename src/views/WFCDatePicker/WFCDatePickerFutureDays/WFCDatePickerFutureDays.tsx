@@ -1,55 +1,230 @@
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import { addDays } from "date-fns";
-import { useWFCDatePicker } from "../useWFCDatePicker";
-import { Alert } from "react-bootstrap";
+import { Controller, useForm, useFormContext } from "react-hook-form";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { es } from "date-fns/locale/es";
+registerLocale("es", es);
 
-export const WFCDatePickerFutureDays = () => {
+import { addDays, isDate } from "date-fns";
+import { useWFCDatePicker } from "../useWFCDatePicker";
+import { CustomInput } from "../components/CustomInput/CustomInput";
+
+export const WFCDatePickerFutureDays = () => {  
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [minDate, setMinDate] =useState<Date | null>(null);
+  
+  //const { register, getValues, setValue, watch, control } = useFormContext();    
+  const { register, control, setValue } = useForm();
+
   const {
+    internalName,
+    isRequired,
+    c,    
     readOnly,
-    calendarStartDay,
     dateFormat,
+    calendarStartDay,
+    timeInputLabel,
+    filterDate,    
+    formatHour,
     maxFutureDays,
-    isEnableCurrentDay,
-    hour,
-    setHour,
-    validationMessage,
     canSelectFutureDates,
-    handleMaxTimeCurrentDay,
+    isEnableCurrentDay,
+    isHourRequired,
+    maxHourCurrentDay,
+    today,
+    tomorrow,    
+    //validationMessage,    
   } = useWFCDatePicker();
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
+  const calculateDateWithHour = (hourParam: string) => {  
+    // Obtén la fecha actual
+    const currentDate = new Date();
+    // Divide la hora pasada como parámetro en horas y minutos
+    const [hours, minutes] = hourParam.split(":").map(Number);
+    // Ajusta la hora y minutos en la fecha actual
+    currentDate.setHours(hours);
+    currentDate.setMinutes(minutes);
+    currentDate.setSeconds(0);
+    currentDate.setMilliseconds(0);
+    return currentDate;
+  };
+  
+  const areDatesTheSame = (date1 : Date, date2: Date) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
+  const calculateFutureDates = (dateChange: Date) => {
+    if (
+      canSelectFutureDates &&
+      isEnableCurrentDay &&
+      maxHourCurrentDay != ""
+    ) {
+      if (!dateChange) return;
+      const now = new Date();
+      const maxTodayHour = calculateDateWithHour(maxHourCurrentDay);
+      if (areDatesTheSame(dateChange, today)) {
+        if (now.getTime() < maxTodayHour.getTime()) {
+          setMinDate(today);        
+          setValue(internalName, now, { shouldDirty: true });
+        } else {
+          setMinDate(tomorrow);
+          setValue(internalName, null, { shouldDirty: true });
+        }
+      } else {
+        setValue(internalName, dateChange, { shouldDirty: true });
+      }
+      return;
+    }
+    setMinDate(today);
+  };
+
+  /*
+  
+  const calculateDateWithHour = (hourParam) => {
+    const currentDate = new Date();
+    const [hours, minutes] = hourParam.split(":").map(Number);
+    currentDate.setHours(hours, minutes, 0, 0);
+    const utcDate = new Date(currentDate.toISOString());
+    return utcDate;
+  };
+
+  const isDatesAreTheSame = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
+  const calculateFutureDates = (dateChange: Date) => {
+    const today = new Date();
+    const utcToday = new Date(today.toISOString());
+    const n = new Date().getTime();
+    if (
+      objConf.canSelectFutureDates &&
+      objConf.isEnableCurrentDay &&
+      objConf.maxHourCurrentDay
+    ) {
+      if (!dateChange) return;
+      const maxTodayHour = calculateDateWithHour(objConf.maxHourCurrentDay);
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const objFutureDates = {
+        "Fecha seleccionada (UTC):": dateChange.toISOString(),
+        "Fecha de hoy (UTC):": utcToday.toISOString(),
+        "Hora máxima permitida (UTC):": maxTodayHour.toISOString(),
+        "Hora actual (UTC):": new Date().toISOString(),
+        "Zona horaria del navegador:": userTimeZone
+      }
+      localStorage.setItem(objConf?.internalName, JSON.stringify(objFutureDates));
+      if (isDatesAreTheSame(dateChange, utcToday)) {
+        if (n <= maxTodayHour.getTime()) {
+          setMinDate(today);
+          setValidationMaxHour("");
+          if (isReady) setValue(objConf?.internalName, new Date(), { shouldDirty: true });
+        } else {
+          setMinDate(new Date(today.setDate(today.getDate() + 1)));
+          if (isReady) setValue(objConf?.internalName, null, { shouldDirty: true });
+        }
+      } else {
+        if (isReady) setValue(objConf?.internalName, dateChange, { shouldDirty: true });
+      }
+      return;
+    }
+    setIsReady(true);
+    setMinDate(new Date());
+  };
+  */
+  
   const handleChange = (dateChange: Date) => {
-    if (canSelectFutureDates && isEnableCurrentDay) {      
+    calculateFutureDates(dateChange);
+    setStartDate(dateChange);
+    /*if (canSelectFutureDates && isEnableCurrentDay) {      
       if(hour) {
         const formattedDate = dateChange.toISOString().split("T")[0];
-        const dateChangeHour = new Date(`${formattedDate}T${hour}:00`);
-        /* setValue(objConf?.internalName, dateChangeHour, {
-          shouldDirty: true,
-        });*/
+        const dateChangeHour = new Date(`${formattedDate}T${hour}:00`);        
         setStartDate(dateChangeHour);
       }      
     } else {
       setStartDate(dateChange);
-    }
+    } */
   };
 
+  const handleValidationFutureDays = () => !isRequired || isDate(startDate);
+  
+  useEffect(() => {
+    setStartDate(new Date())
+    calculateFutureDates(today)
+  },[])
+
+  /*
   useEffect(() => {
     const delayFn = setTimeout(() => {
-      setHour(hour);
+      setHour(hour);      
       handleMaxTimeCurrentDay(hour);
     }, 350);
     return () => clearTimeout(delayFn);
-  }, [hour]);
+  }, [hour]); 
+  */
 
-  return (
-    <>
-      <div>WFCDatePickerFutureDays</div>
-      <div className="w-100">
-        <DatePicker
+return (    
+  <div className="w-100">
+    <div>WFCDatePickerFutureDays</div>
+      <Controller
+        name={`${internalName}`}
+        control={control}
+        defaultValue={startDate}
+        rules={{ 
+          required: isRequired,
+          validate: handleValidationFutureDays,
+        }}
+        render={({ field: { onChange, onBlur, value, ref, name } }) => (
+          <>
+          <DatePicker
+            ref={(elem) => {
+              elem && ref(elem.input);
+            }}
+            locale="es"
+            icon="fa fa-calendar"
+            className={`form-control form-control-solid w-250px ${c}`}
+            selected={startDate}
+            onSelect={handleChange}
+            onChange={handleChange}
+            onKeyDown={(e) => e.preventDefault()}
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            readOnly={readOnly}
+            dateFormat={dateFormat}  
+            calendarStartDay={calendarStartDay}
+            filterDate={filterDate}
+            timeInputLabel={timeInputLabel}
+            showTimeInput={isHourRequired}      
+            minDate={minDate}
+            maxDate={addDays(today, Number(maxFutureDays))}
+            showTimeInput={isHourRequired}
+            timeInputLabel={timeInputLabel}
+            timeFormat={formatHour}
+            shouldCloseOnSelect={false}
+            closeOnScroll={true}
+            /* openToDate={new Date("1993/09/28")} */
+            customTimeInput={
+              isHourRequired && formatHour === "24" ? (<CustomInput
+                className="form-control"
+                onChange={(date) => setStartDate(date)}
+              />) : undefined
+            }   
+          />          
+          </>
+        )}
+      />
+
+        {/* <DatePicker
           locale="es"
-          icon="fa fa-calendar"
-          /* className={`form-control form-control-solid w-250px ${c}`} */
+          icon="fa fa-calendar"          
           selected={startDate}
           onChange={handleChange}
           onKeyDown={(e) => {
@@ -57,15 +232,15 @@ export const WFCDatePickerFutureDays = () => {
           }}
           readOnly={readOnly}
           calendarStartDay={calendarStartDay}
-          /* filterDate={isWeekday} */
+          filterDate={isWeekday} 
           dateFormat={"dd/MM/YYYY"}
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
           minDate={new Date()}
           maxDate={addDays(new Date(), Number(maxFutureDays))}
-        />
-        {isEnableCurrentDay && (
+        /> */}
+        {/* {isEnableCurrentDay && (
           <input
             className="form-control d-inline ms-1"
             style={{ width: 80 }}
@@ -74,8 +249,8 @@ export const WFCDatePickerFutureDays = () => {
             value={hour}
             onChange={(e) => setHour(e.target.value)}
           />
-        )}
-        {validationMessage && (
+        )} */}
+       {/*  {validationMessage && (
           <>
             <div style={{ marginBottom: ".2rem" }}>
               <Alert
@@ -86,8 +261,7 @@ export const WFCDatePickerFutureDays = () => {
               </Alert>
             </div>
           </>
-        )}
-      </div>
-    </>
+        )} */}
+      </div>    
   );
 };

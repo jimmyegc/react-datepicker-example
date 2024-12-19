@@ -1,4 +1,5 @@
 export const objConf = {
+  internalName: "example_date",
   fieldName: "Dia de nacimiento",
   position: "top",
   column: "one",
@@ -10,11 +11,11 @@ export const objConf = {
   startOfWeek: "Lun",
   isHourRequired: true,
   formatDate: "dd MM yyyy",
-  formatHour: "12",
+  formatHour: "24",
   daysOfWeek: [
     {
       name: "Dom",
-      enabled: false,
+      enabled: true,
     },
     {
       name: "Lun",
@@ -38,22 +39,22 @@ export const objConf = {
     },
     {
       name: "Sáb",
-      enabled: false,
+      enabled: true,
     },
   ],
-  defaultDateType: "today",
-  defaultDate: "2024-08-31T19:42:13.000Z",
+  defaultDateType: "",
+  defaultDate: "",
   defaultDateValue: "",
   isRangeOfAge: false,
-  minAge: 18,
-  maxAge: 65,
+  minAge: null,
+  maxAge: null,
   canSelectPastDates: false,
-  maxPastDays: 60,
-  canSelectFutureDates: false,
-  maxFutureDays: 30,
-  isEnableCurrentDay: false,
-  maxHourCurrentDay: null,
-  canBlockDays: true,
+  maxPastDays: null,
+  canSelectFutureDates: true,
+  maxFutureDays: 5,
+  isEnableCurrentDay: true,
+  maxHourCurrentDay: "20:30",
+  canBlockDays: false,
   canEnabledDays: false,
   disabledDays: [
     {
@@ -79,5 +80,5 @@ export const objConf = {
       humanDate: "18/07/2024",
       status: "enabled",
     },
-  ],
+  ], 
 }

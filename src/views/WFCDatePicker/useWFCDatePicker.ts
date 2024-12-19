@@ -27,7 +27,9 @@ export const useWFCDatePicker = () => {
   const [hour, setHour] = useState("00:00");
   const [dateFormat, setDateFormat] = useState<string | undefined>();  
   const [validationMessage, setValidationMessage] = useState("");
-  const shouldCloseOnSelect = true
+  const [shouldCloseOnSelect, setShouldCloseOnSelect] = useState(true)
+  const today = new Date();
+  const tomorrow = addDays(new Date(), 1);
 
   const option =
     objConf.canBlockDays ||
@@ -39,6 +41,8 @@ export const useWFCDatePicker = () => {
       : options.default;
 
   const {
+    internalName,
+    isRequired,
     canBlockDays,
     isRangeOfAge,
     canSelectPastDates,
@@ -60,6 +64,7 @@ export const useWFCDatePicker = () => {
   const timeFormat = formatHour === "24" ? " HH:mm" : "h:mm aa"; // 24 Hrs / 12 Hrs
   const timeInputLabel = "Hora";
 
+  // General
   const getFormatDate = () => {
     const cleanFormatDate = objConf.formatDate?.replace(/ /g, objConf.separator) || "";
     const hourFormat = objConf.isHourRequired
@@ -69,9 +74,8 @@ export const useWFCDatePicker = () => {
     return `${cleanFormatDate}${objConf.isHourRequired ? ` ${hourFormat}` : ""}`;
   };
   
-
   const filterDate = (date) => {
-    // Días hábiles de la Semana    
+    // Días hábiles de la Semana : isWeekday
     const day = getDay(date);
     return objConf.daysOfWeek.every(
       (dayConfig, index) => day !== (!dayConfig.enabled ? index : -1)
@@ -79,48 +83,70 @@ export const useWFCDatePicker = () => {
   };
 
   const getExcludeDates = () => {
-    if (canBlockDays) {
-      const blockDates: BlockDates[] = [];
-      if (disabledDays.length > 0) {
-        disabledDays.forEach((day) => {
-          blockDates.push({
-            start: new Date(day.rawDate.split("@")[0]),
-            end: new Date(day.rawDate.split("@")[1]),
-          });
-        });
-        setExcludeDates(blockDates);
-      }
-    }
+    if (!canBlockDays || disabledDays.length === 0) return;
+    const blockDates = disabledDays.map(day => {
+      const [start, end] = day.rawDate.split("@").map(date => new Date(date));
+      return { start, end };
+    });  
+    setExcludeDates(blockDates);
   };
 
   const getIncludeDates = () => {
-    if (canEnabledDays) {
-      const enabledDates: BlockDates = [];
-      if (enabledDays.length > 0) {
-        objConf.enabledDays.forEach((day) => {
-          enabledDates.push({
-            start: new Date(day.rawDate.split("@")[0]),
-            end: new Date(day.rawDate.split("@")[1]),
-          });
-        });
-        setIncludeDates(enabledDates);
-      }
-    }
+    if (!canEnabledDays || enabledDays.length === 0) return;
+    const enabledDates = enabledDays.map(day => {
+      const [start, end] = day.rawDate.split("@").map(date => new Date(date));
+      return { start, end };
+    });
+    setIncludeDates(enabledDates);
   };
 
-  const handleAgeValidation = (e) => {    
-    const ageCalc = ageCalculator(e);
-    if (ageCalc >= objConf.minAge && ageCalc <= objConf.maxAge) {
-      setValidationMessage("");
+  // Age Range
+  const calculateAge = (birthDate: Date) => {
+    const birth = new Date(birthDate);
+    const today = new Date();  
+    // Calcular la diferencia en años, meses y días
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();  
+    // Ajustar años y meses si es necesario
+    if (days < 0) {
+      months--; // Si los días son negativos, restamos un mes
+      // Calculamos los días restantes en el mes anterior
+      const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      days += previousMonth;
+    }  
+    if (months < 0) {
+      years--; // Si los meses son negativos, restamos un año
+      months += 12; // Ajustamos los meses
+    }  
+    return { years, months, days };
+  }
+
+  const isWithinAgeRange = (birthDate: Date, minAge: number, maxAge: number) => {
+    const birth = new Date(birthDate);
+    const today = new Date();  
+    // Fecha mínima permitida (minAge)
+    const minDate = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());    
+    // Fecha máxima permitida (maxAge)
+    const maxDate = new Date(today.getFullYear() - maxAge, today.getMonth(), today.getDate());  
+    // Validar si la fecha de nacimiento está dentro del rango
+    return birth <= minDate && birth >= maxDate;
+  };
+  
+  const handleAgeValidation = (birthDate: Date) => {    
+    if (isWithinAgeRange(birthDate, objConf.minAge, objConf.maxAge)) {      
+      setValidationMessage("");      
     } else {
+      const ageCalc = calculateAge(birthDate);
       setValidationMessage(
-        `La edad ${ageCalc} no es válida, mínimo ${objConf.minAge} máximo ${objConf.maxAge}`
+        `La edad (${ageCalc.years} años, ${ageCalc.months} meses y ${ageCalc.days} días) no es válida, mínimo ${objConf.minAge}-${objConf.maxAge} años.`
       );
     }
   };
 
   const validHHMMstring = (str) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(str);
 
+  /*
   const handleMaxTimeCurrentDay = (value) => {
     if (!validHHMMstring(value)) {
       setValidationMessage("Ingrese una hora válida en formato 24 hrs (HH:MM)");
@@ -141,20 +167,9 @@ export const useWFCDatePicker = () => {
         );
       }
     }
-    //handleChange(startDate);
+    handleChange(startDate);
   };
-
-  const ageCalculator = (fechaNacimiento: Date) => {    
-    const nacimiento = new Date(fechaNacimiento);
-    const hoy = new Date();    
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();        
-    const mesDiferencia = hoy.getMonth() - nacimiento.getMonth();
-    const diaDiferencia = hoy.getDate() - nacimiento.getDate();    
-    if (mesDiferencia < 0 || (mesDiferencia === 0 && diaDiferencia < 0)) {
-        edad--;
-    }
-    return edad;
-  }
+*/  
 
   const formatUTC = (dateInt, addOffset = false) => {
     const date =
@@ -177,10 +192,9 @@ export const useWFCDatePicker = () => {
   const c = "";
 
   const handleInitial = () => {
-    const initialDate = objConf.defaultDateType === "today" || objConf.defaultDateType === ""
-      ? new Date()
-      : new Date(objConf.defaultDate);
-
+    const initialDate = objConf.defaultDateType === "" || objConf.defaultDateType === undefined
+      ? null
+      : objConf.defaultDateType === "today" ? new Date() : new Date(objConf.defaultDate);    
     setDefaultDate(initialDate);
     setDateFormat(getFormatDate());
   };
@@ -192,12 +206,17 @@ export const useWFCDatePicker = () => {
 
   return {
     // General
+    internalName,
+    isRequired,
+    today,
+    tomorrow,
     objConf,
     options,
     option,
     readOnly,
-    dateFormat,
+    dateFormat,    
     timeFormat,
+    formatHour,
     calendarStartDay,
     defaultDate,
     filterDate,
@@ -206,6 +225,9 @@ export const useWFCDatePicker = () => {
     isHourRequired,
     timeInputLabel,
     shouldCloseOnSelect,
+    setShouldCloseOnSelect,
+    validHHMMstring,
+    formatUTC,
     // Custom Components
     canBlockDays,
     isRangeOfAge,
@@ -219,15 +241,16 @@ export const useWFCDatePicker = () => {
     // Range of Age
     age,
     handleAgeValidation,
-    ageCalculator,
+    calculateAge,
     // Past Days
     maxPastDays,
     // Future Days
     maxFutureDays,
     isEnableCurrentDay,
+    maxHourCurrentDay,
     hour,
     setHour,
-    handleMaxTimeCurrentDay,
+    // handleMaxTimeCurrentDay, // Removed
     // include Dates or Enabled Dates
     getIncludeDates,
     includeDates,
