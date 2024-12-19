@@ -9,7 +9,7 @@ export const objConf = {
   readOnly: false,
   separator: "/",
   startOfWeek: "Lun",
-  isHourRequired: true,
+  isHourRequired: false,
   formatDate: "dd MM yyyy",
   formatHour: "24",
   daysOfWeek: [
@@ -49,11 +49,11 @@ export const objConf = {
   minAge: null,
   maxAge: null,
   canSelectPastDates: false,
-  maxPastDays: null,
+  maxPastDays: 5,
   canSelectFutureDates: true,
   maxFutureDays: 5,
   isEnableCurrentDay: true,
-  maxHourCurrentDay: "20:30",
+  maxHourCurrentDay: "20:45",
   canBlockDays: false,
   canEnabledDays: false,
   disabledDays: [

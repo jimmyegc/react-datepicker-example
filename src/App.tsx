@@ -1,13 +1,15 @@
 import { WFCDatePicker } from "./views/WFCDatePicker/WFCDatePicker";
-import JsonConverter from "./components/ui/JsonConverter/JsonConverter";
+import JSONEditor from "./components/ui/JSONEditor/JSONEditor";
 
 export const App = () => {
 
   return (<>
     <div>      
       <div className="container">
-        {/* <JsonConverter /> */}
-        <WFCDatePicker /> 
+        {/* <JsonConverter /> 
+        */}
+        <JSONEditor />
+        <WFCDatePicker />
       </div>
     </div>
   </>)
